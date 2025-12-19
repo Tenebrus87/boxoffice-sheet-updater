@@ -1,0 +1,36 @@
+name: Backfill a year (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Year to backfill"
+        required: true
+        default: "2025"
+      raw_tab:
+        description: "Raw tab name"
+        required: true
+        default: "raw_2025"
+      leader_tab:
+        description: "Leaderboard tab name"
+        required: true
+        default: "leaderboard_2025"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python main.py
+        env:
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          YEAR: ${{ github.event.inputs.year }}
+          RAW_TAB: ${{ github.event.inputs.raw_tab }}
+          LEADER_TAB: ${{ github.event.inputs.leader_tab }}
+          REBUILD: "1"
+          APPEND_BATCH_SIZE: "500"

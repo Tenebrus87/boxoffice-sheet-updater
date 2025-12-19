@@ -9,6 +9,7 @@ import pandas as pd
 import requests
 import gspread
 from google.oauth2.service_account import Credentials
+from io import StringIO
 
 # -----------------
 # Config (ENV)
@@ -55,7 +56,7 @@ def gs_client():
 def ensure_headers(ws):
     if ws.acell("A1").value:
         return
-    ws.update("A1:E1", [["date", "title", "revenue", "theaters", "distributor"]])
+    ws.update([["date", "title", "revenue", "theaters", "distributor"]], range_name="A1:E1")
 
 
 def get_max_date(ws) -> Optional[dt.date]:
@@ -123,7 +124,7 @@ def fetch_daily_table(date_str: str) -> pd.DataFrame:
                 raise RuntimeError(f"HTTP {r.status_code}")
 
             # BOM pages usually contain at least one HTML table we can parse
-            tables = pd.read_html(r.text)
+            tables = pd.read_html(StringIO(r.text))
             if not tables:
                 raise RuntimeError("No tables found")
 

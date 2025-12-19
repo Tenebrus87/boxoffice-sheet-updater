@@ -1,8 +1,8 @@
-name: Update box office sheet
+name: Update 2025 box office sheet
 
 on:
   schedule:
-    - cron: "15 6 * * *"
+    - cron: "20 6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -19,4 +19,7 @@ jobs:
           SHEET_ID: ${{ secrets.SHEET_ID }}
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           YEAR: "2025"
-
+          RAW_TAB: "raw_2025"
+          LEADER_TAB: "leaderboard_2025"
+          REBUILD: "0"
+          APPEND_BATCH_SIZE: "500"

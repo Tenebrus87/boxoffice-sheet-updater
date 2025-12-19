@@ -1,0 +1,25 @@
+name: Update 2026 box office sheet
+
+on:
+  schedule:
+    - cron: "25 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python main.py
+        env:
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          YEAR: "2026"
+          RAW_TAB: "raw_2026"
+          LEADER_TAB: "leaderboard_2026"
+          REBUILD: "0"
+          APPEND_BATCH_SIZE: "500"

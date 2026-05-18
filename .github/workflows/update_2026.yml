@@ -1,8 +1,8 @@
 name: Update 2026 box office sheet
 
 on:
-  schedule:
-    - cron: "25 6 * * *"
+  # schedule:
+  #   - cron: "25 6 * * *"
   workflow_dispatch:
 
 jobs:
